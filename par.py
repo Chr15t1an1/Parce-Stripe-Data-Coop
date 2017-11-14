@@ -2,6 +2,8 @@ pathToInputFile = "public/upload/in.csv"
 
 pathToExportFolder = "/public/export"
 
+exportFileid = 11111111
+
 
 import csv
 import re
@@ -58,6 +60,38 @@ def parceNumOfHours(productDescription):
 
 
 
+def parceArrayData(dataarray):
+    parcedOutput = []
+    parcedOutput.append(dataarray[0])
+
+    for row in dataarray[1:]:
+        productPrice = float(row[3])
+        nmlsFee = int(parceNumOfHours(row[1])) * 1.5
+        adjustedPrice = productPrice - nmlsFee
+
+        initRow = [row[0], row[1], row[2], str(adjustedPrice), row[4], row[5], row[6], row[7], row[8], row[9], row[10]]
+
+        saleId = row[0]
+        bankingFee = "NMLS Banking Fee"
+        InvoiceDate = ''
+        secondrowAmount = nmlsFee
+        email = ''
+        name = ''
+        adrOne = ''
+        adrTwo = ''
+        cardCity = ''
+        cardState = ''
+        cardZip = ''
+
+        bankingFeeRow = [saleId, bankingFee, InvoiceDate, secondrowAmount, email, name, adrOne, adrTwo, cardCity,
+                         cardState, cardZip]
+
+        parcedOutput.append(initRow)
+        parcedOutput.append(bankingFeeRow)
+
+    return parcedOutput
+
+
 
 
 
@@ -81,55 +115,66 @@ def parceNumOfHours(productDescription):
 
 
 
-# Trim File
+# Trim data
 trimedUserInput = trimInput(pathToInputFile)
 
+# Parce data
+parecedData = parceArrayData(trimedUserInput)
 
-#print(trimedUserInput)
-
-
-# trimedUserInput
-
-parcedOutput = []
-
-for row in trimedUserInput[1:]:
-    productPrice = float(row[3])
-    nmlsFee = int(parceNumOfHours(row[1]))*1.5
-    adjustedPrice = productPrice - nmlsFee
-
-    initRow = [row[0], row[1], row[2], str(adjustedPrice), row[4], row[5], row[6], row[7], row[8], row[9], row[10]]
-    parcedOutput.append(initRow)
+#Export file
 
 
 
-    saleId = row[0]
-    bankingFee = "NMLS Banking Fee"
-    InvoiceDate = ''
-    secondrowAmount = nmlsFee
-    email = ''
-    name = ''
-    adrOne = ''
-    adrTwo = ''
-    cardCity = ''
-    cardState = ''
-    cardZip = ''
+
+print(parecedData)
 
 
-    bankingFeeRow = [saleId, bankingFee, InvoiceDate,secondrowAmount,email , name, adrOne , adrTwo , cardCity , cardState , cardZip ]
+# parcedOutput = []
+# parcedOutput.append(trimedUserInput[0])
+#
+# for row in trimedUserInput[1:]:
+#     productPrice = float(row[3])
+#     nmlsFee = int(parceNumOfHours(row[1]))*1.5
+#     adjustedPrice = productPrice - nmlsFee
+#
+#     initRow = [row[0], row[1], row[2], str(adjustedPrice), row[4], row[5], row[6], row[7], row[8], row[9], row[10]]
+#
+#     saleId = row[0]
+#     bankingFee = "NMLS Banking Fee"
+#     InvoiceDate = ''
+#     secondrowAmount = nmlsFee
+#     email = ''
+#     name = ''
+#     adrOne = ''
+#     adrTwo = ''
+#     cardCity = ''
+#     cardState = ''
+#     cardZip = ''
+#
+#     bankingFeeRow = [saleId, bankingFee, InvoiceDate,secondrowAmount,email , name, adrOne , adrTwo , cardCity , cardState , cardZip ]
+#
+#     parcedOutput.append(initRow)
+#     parcedOutput.append(bankingFeeRow)
+#
+# print(parcedOutput)
 
 
 
-    print("--")
-    print(productPrice)
-    print(nmlsFee)
-    print(adjustedPrice)
-    print("--")
 
 
 
-    print(row)
-    print(initRow)
-    print(bankingFeeRow)
+
+    # print("--")
+    # print(productPrice)
+    # print(nmlsFee)
+    # print(adjustedPrice)
+    # print("--")
+    #
+    #
+    #
+    # print(row)
+    # print(initRow)
+    # print(bankingFeeRow)
 
 
 #
