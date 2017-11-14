@@ -1,12 +1,15 @@
 pathToInputFile = "public/upload/in.csv"
 
-pathToExportFolder = "/public/export"
+pathToExportFolder = "public/exports"
 
 exportFileid = 11111111
+
+exportFilename = "Newfilename"
 
 
 import csv
 import re
+import pandas as pd
 
 
 
@@ -62,7 +65,7 @@ def parceNumOfHours(productDescription):
 
 def parceArrayData(dataarray):
     parcedOutput = []
-    parcedOutput.append(dataarray[0])
+    #parcedOutput.append(dataarray[0])
 
     for row in dataarray[1:]:
         productPrice = float(row[3])
@@ -92,16 +95,20 @@ def parceArrayData(dataarray):
     return parcedOutput
 
 
-
-
-
-
-
-
-
-
-
 # Write to CSV -- Takes in array, returns CSV File
+
+def outputToCSV(data, exportPath):
+    df = pd.DataFrame(data, columns=["Invoice","Product/Service","Invoice Date","Amount","Email","Client","Billing Address","Billing Address Line 2","Billing Address Line 3","Billing Address Line 3","Billing Address Line 3"])
+    df.to_csv(exportPath+'/'+exportFilename+'.csv', index=False)
+
+
+
+
+
+
+
+
+
 
 
 
@@ -122,11 +129,13 @@ trimedUserInput = trimInput(pathToInputFile)
 parecedData = parceArrayData(trimedUserInput)
 
 #Export file
+outputToCSV(parecedData, pathToExportFolder)
+
+#Send confirmation Get Request.
 
 
 
-
-print(parecedData)
+#print(parecedData)
 
 
 # parcedOutput = []
