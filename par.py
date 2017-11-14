@@ -50,18 +50,11 @@ def trimInput (filePath):
 
 def parceNumOfHours(productDescription):
     #print(productDescription)
-    #numWspaces =  re.compile('/([\ ][0-9][\ ])+/g',productDescription)
-    #numWspaces = re.search(r"([\ ][0-9][\ ])", productDescription)
-    #regExpre = re.compile('/([\ ][0-9][\ ])+/')
-    regExpre = re.compile('([\ ][0-9][\ ])+')
-
-    #print(regExpre.match("[series] 2 Hour OR SAFE CE 2017 Online"))
-    #print(regExpre.search("[series] 1 Hour KY SAFE CE 2017 Online"))
-
-    numWspaces = regExpre.search(productDescription)
-
-    print(numWspaces)
-
+    num = re.findall(r'([\ ][0-9][\ ])+', productDescription)
+    # Convert list to string and strip whitespace.
+    num = ''.join(num)
+    num = num.strip()
+    return num
 
 
 
@@ -89,36 +82,68 @@ def parceNumOfHours(productDescription):
 
 
 # Trim File
-
-
 trimedUserInput = trimInput(pathToInputFile)
 
 
-# print(trimedUserInput)
+#print(trimedUserInput)
 
 
 # trimedUserInput
 
 parcedOutput = []
 
-for row in trimedUserInput:
+for row in trimedUserInput[1:]:
+    productPrice = float(row[3])
+    nmlsFee = int(parceNumOfHours(row[1]))*1.5
+    adjustedPrice = productPrice - nmlsFee
 
-    parcedOutput.append(row)
+    initRow = [row[0], row[1], row[2], str(adjustedPrice), row[4], row[5], row[6], row[7], row[8], row[9], row[10]]
+    parcedOutput.append(initRow)
+
+
 
     saleId = row[0]
-    bankingFee = row[1]
+    bankingFee = "NMLS Banking Fee"
+    InvoiceDate = ''
+    secondrowAmount = nmlsFee
+    email = ''
+    name = ''
+    adrOne = ''
+    adrTwo = ''
+    cardCity = ''
+    cardState = ''
+    cardZip = ''
+
+
+    bankingFeeRow = [saleId, bankingFee, InvoiceDate,secondrowAmount,email , name, adrOne , adrTwo , cardCity , cardState , cardZip ]
+
+
+
+    print("--")
+    print(productPrice)
+    print(nmlsFee)
+    print(adjustedPrice)
+    print("--")
+
 
 
     print(row)
+    print(initRow)
+    print(bankingFeeRow)
 
-    feeRow = [saleId,bankingFee]
 
-    parcedOutput.append(feeRow)
+#
+#     print(row)
+#
+#     feeRow = [saleId,bankingFee]
+#
+#     parcedOutput.append(feeRow)
+#
+#     print(feeRow)
+#
+#     print(parceNumOfHours(row[1]))
 
-    print(feeRow)
-
-    parceNumOfHours(bankingFee)
-
+    #print(Amount)
 
 
 
